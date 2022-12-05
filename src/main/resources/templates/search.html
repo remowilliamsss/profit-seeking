@@ -31,6 +31,16 @@
         -webkit-box-shadow: inset 0 1px 1px rgba(69,69,69,.075),0 0 8px rgba(69,69,69,.6);
         box-shadow: inset 0 1px 1px rgba(69,69,69,.075),0 0 8px rgba(69,69,69,.6);
       }
+      .link {
+        text-decoration: none;
+        color: rgba(69, 69, 69);
+      }
+      .link:hover {
+        color: rgba(50, 50, 50);
+      }
+      .card-title {
+        color: dimgray;
+      }
       .card:hover {
         background-color: rgba(100, 100, 100, 0.1);
       }
@@ -39,16 +49,24 @@
   <body>
   <nav class="navbar navbar-expand-lg bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand p-0" href="/profit-seeking/search">
+      <a class="navbar-brand p-0" href="/">
         <img th:src="@{/profit-seeking-logo.png}" alt="logo" width="45" />
       </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+      >
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/profit-seeking/search">Search</a>
+            <a class="nav-link active" aria-current="page" href="/search">Search</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -69,7 +87,7 @@
     </div>
     <form
       th:method="POST"
-      th:action="@{/profit-seeking/search}"
+      th:action="@{/search}"
       class="d-flex"
       role="search"
     >
@@ -92,18 +110,25 @@
       <div th:each="item : ${results.getFoundProductList()}">
         <div class="col">
           <div class="card">
-            <img
-                    th:src="${item.image}"
-                    class="card-img-top"
-                    alt="Item image"
-            />
+            <a th:href="@{/products/{sku}(sku=${item.getSku()})}">
+              <img
+                      th:src="${item.image}"
+                      class="card-img-top"
+                      alt="Item image"
+              />
+            </a>
             <div class="card-body">
+              <a
+                      th:href="@{/products/{sku}(sku=${item.getSku()})}"
+                      class="link"
+              >
                 <h5 th:text="${item.name}" class="card-title">
                   Item name
                 </h5>
+              </a>
               <hr>
               <div th:each="difference : ${item.getDifferences()}">
-                <h6 class="line" th:text="${difference.storeName}">Store name</h6>
+                <h6 class="line card-title" th:text="${difference.storeName}">Store name</h6>
                 <p class="line" th:text="${difference.price + '&nbsp' + difference.priceCurrency}">Price</p>
                 <a
                         th:href="${difference.url}"
