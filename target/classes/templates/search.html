@@ -73,8 +73,8 @@
               Stores
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Sneakerhead</a></li>
-              <li><a class="dropdown-item" href="#">Footbox</a></li>
+              <li><a class="dropdown-item" href="/stores/Sneakerhead">Sneakerhead</a></li>
+              <li><a class="dropdown-item" href="/stores/Footbox">Footbox</a></li>
             </ul>
           </li>
         </ul>
@@ -104,10 +104,10 @@
             th:if="${results}"
             class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5 my-0"
     >
-      <div th:if="${results.getFoundProductList().isEmpty()}">
+      <div th:if="${results.isEmpty()}">
         <h5>Nothing found</h5>
       </div>
-      <div th:each="item : ${results.getFoundProductList()}">
+      <div th:each="item : ${results}">
         <div class="col">
           <div class="card">
             <a th:href="@{/products/{sku}(sku=${item.getSku()})}">
@@ -135,7 +135,7 @@
                         th:text="Buy"
                         target="_blank"
                         class="line btn btn-secondary btn-sm right"
-                >Store name</a
+                >Buy</a
                 >
               </div>
             </div>
