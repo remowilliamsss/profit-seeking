@@ -6,7 +6,7 @@
 
 Видео с работой приложения:
 
-https://disk.yandex.ru/i/UCnXbSPPWe3OIw
+https://disk.yandex.ru/i/bbmtSsKvLTuPhw
 
 В проекте использовались:
 1. Spring Boot

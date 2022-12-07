@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping()
-public class ProfitSeekingController {
+public class SearchController {
 
     @GetMapping("/")
     public String index() {
@@ -22,7 +22,7 @@ public class ProfitSeekingController {
     }
 
     @GetMapping("/search")
-    public String searchPage() {
+    public String search() {
         return "search";
     }
 
