@@ -1,4 +1,4 @@
-package ru.egorov.ProfitSeeking.dto;
+package ru.egorov.ProfitSeeking.dto.product;
 
 public class SneakerheadProductDto extends ProductDto {
 }

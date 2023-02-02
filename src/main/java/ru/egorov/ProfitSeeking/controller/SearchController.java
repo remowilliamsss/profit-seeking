@@ -7,9 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import ru.egorov.ProfitSeeking.dto.SearchResponse;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -32,9 +32,9 @@ public class SearchController {
 
         RestTemplate restTemplate = new RestTemplate();
 
-        SearchResponse searchResponse = restTemplate.postForObject(url, createRequest(query), SearchResponse.class);
+        var foundProductDtos = restTemplate.postForObject(url, createRequest(query), List.class);
 
-        model.addAttribute("results", searchResponse.getFoundProductList());
+        model.addAttribute("results", foundProductDtos);
 
         return "search";
     }
@@ -45,9 +45,11 @@ public class SearchController {
 
         RestTemplate restTemplate = new RestTemplate();
 
-        SearchResponse searchResponse = restTemplate.postForObject(url, createRequest(sku), SearchResponse.class);
+        var foundProductDtos = restTemplate.postForObject(url, createRequest(sku), List.class);
 
-        model.addAttribute("item", searchResponse.getFoundProductList().get(0));
+        model.addAttribute("item", foundProductDtos.stream()
+                .findFirst()
+                .orElseThrow());
 
         return "product";
     }

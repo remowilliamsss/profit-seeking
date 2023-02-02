@@ -73,8 +73,8 @@
               Stores
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/stores/Sneakerhead">Sneakerhead</a></li>
-              <li><a class="dropdown-item" href="/stores/Footbox">Footbox</a></li>
+              <li><a class="dropdown-item" href="/stores/sneakerhead">Sneakerhead</a></li>
+              <li><a class="dropdown-item" href="/stores/footbox">Footbox</a></li>
             </ul>
           </li>
         </ul>
@@ -110,7 +110,7 @@
       <div th:each="item : ${results}">
         <div class="col">
           <div class="card">
-            <a th:href="@{/products/{sku}(sku=${item.getSku()})}">
+            <a th:href="@{/products/{sku}(sku=${item.sku})}">
               <img
                       th:src="${item.image}"
                       class="card-img-top"
@@ -119,7 +119,7 @@
             </a>
             <div class="card-body">
               <a
-                      th:href="@{/products/{sku}(sku=${item.getSku()})}"
+                      th:href="@{/products/{sku}(sku=${item.sku})}"
                       class="link"
               >
                 <h5 th:text="${item.name}" class="card-title">
@@ -127,8 +127,8 @@
                 </h5>
               </a>
               <hr>
-              <div th:each="difference : ${item.getDifferences()}">
-                <h6 class="line card-title" th:text="${difference.storeName}">Store name</h6>
+              <div th:each="difference : ${item.differences}">
+                <h6 class="line card-title" th:text="${difference.storeType}">Store name</h6>
                 <p class="line" th:text="${difference.price + '&nbsp' + difference.priceCurrency}">Price</p>
                 <a
                         th:href="${difference.url}"

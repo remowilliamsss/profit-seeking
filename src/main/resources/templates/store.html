@@ -70,8 +70,8 @@
               Stores
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/stores/Sneakerhead">Sneakerhead</a></li>
-              <li><a class="dropdown-item" href="/stores/Footbox">Footbox</a></li>
+              <li><a class="dropdown-item" href="/stores/sneakerhead">Sneakerhead</a></li>
+              <li><a class="dropdown-item" href="/stores/footbox">Footbox</a></li>
             </ul>
           </li>
         </ul>
@@ -94,26 +94,26 @@
       <div th:each="item : ${products}">
         <div class="col">
           <div class="card">
-            <a th:href="@{/products/{sku}(sku=${item.sku})}">
+            <a th:href="@{/products/{sku}(sku=${item.getSku()})}">
               <img
-                  th:src="${item.image}"
+                  th:src="${item.getImage()}"
                   class="card-img-top"
                   alt="Item image"
               />
             </a>
             <div class="card-body">
               <a
-                  th:href="@{/products/{sku}(sku=${item.sku})}"
+                  th:href="@{/products/{sku}(sku=${item.getSku()})}"
                   class="link"
               >
-                <h5 th:text="${item.name}" class="card-title">
+                <h5 th:text="${item.getName()}" class="card-title">
                   Item name
                 </h5>
               </a>
               <hr>
-                <p class="line" th:text="${item.price + '&nbsp' + item.priceCurrency}">Price</p>
+                <p class="line" th:text="${item.getPrice() + '&nbsp' + item.getPriceCurrency()}">Price</p>
                 <a
-                    th:href="${item.url}"
+                    th:href="${item.getUrl()}"
                     th:text="Buy"
                     target="_blank"
                     class="line btn btn-secondary btn-sm right"
@@ -137,22 +137,22 @@
               <a class="page-link" th:href="@{/stores/{store}/{page}(store=${store}, page=${page - 1})}">Previous</a>
             </li>
           </div>
-          <div th:each="pagin : ${pagination}">
-            <div th:if="${page != pagin}">
+          <div th:each="pagen : ${pagination}">
+            <div th:if="${page != pagen}">
               <li class="page-item">
                 <a
-                    th:href="@{/stores/{store}/{page}(store=${store}, page=${pagin})}"
-                    th:text="${pagin}"
+                    th:href="@{/stores/{store}/{page}(store=${store}, page=${pagen})}"
+                    th:text="${pagen}"
                     class="page-link"
                 >Pagination</a
                 >
               </li>
             </div>
-            <div th:if="${page == pagin}">
+            <div th:if="${page == pagen}">
               <li class="page-item disabled">
                 <a
-                    th:href="@{/stores/{store}/{page}(store=${store}, page=${pagin})}"
-                    th:text="${pagin}"
+                    th:href="@{/stores/{store}/{page}(store=${store}, page=${pagen})}"
+                    th:text="${pagen}"
                     class="page-link"
                 >Pagination</a
                 >
@@ -164,27 +164,27 @@
           </li>
         </ul>
       </div>
-      <div th:if="${(page > 3) && (page < numberOfPages - 2)}">
+      <div th:if="${(page > 3) && (page < pageCount - 2)}">
         <ul class="pagination justify-content-end my-5">
           <li class="page-item">
             <a class="page-link" th:href="@{/stores/{store}/{page}(store=${store}, page=${page - 1})}">Previous</a>
           </li>
-          <div th:each="pagin : ${pagination}">
-            <div th:if="${pagin != 4}">
+          <div th:each="pagen : ${pagination}">
+            <div th:if="${pagen != 4}">
               <li class="page-item">
                 <a
-                    th:href="@{/stores/{store}/{page}(store=${store}, page=${pagin + page - 4})}"
-                    th:text="${pagin + page - 4}"
+                    th:href="@{/stores/{store}/{page}(store=${store}, page=${pagen + page - 4})}"
+                    th:text="${pagen + page - 4}"
                     class="page-link"
                 >Pagination</a
                 >
               </li>
             </div>
-            <div th:if="${pagin == 4}">
+            <div th:if="${pagen == 4}">
               <li class="page-item disabled">
                 <a
-                    th:href="@{/stores/{store}/{page}(store=${store}, page=${pagin + page - 4})}"
-                    th:text="${pagin + page - 4}"
+                    th:href="@{/stores/{store}/{page}(store=${store}, page=${pagen + page - 4})}"
+                    th:text="${pagen + page - 4}"
                     class="page-link"
                 >Pagination</a
                 >
@@ -196,39 +196,39 @@
           </li>
         </ul>
       </div>
-      <div th:if="${page >= (numberOfPages - 2)}">
+      <div th:if="${page >= (pageCount - 2)}">
         <ul class="pagination justify-content-end my-5">
           <li class="page-item">
             <a class="page-link" th:href="@{/stores/{store}/{page}(store=${store}, page=${page - 1})}">Previous</a>
           </li>
-          <div th:each="pagin : ${pagination}">
-            <div th:if="${page - pagin + 7 != numberOfPages}">
+          <div th:each="pagen : ${pagination}">
+            <div th:if="${page - pagen + 7 != pageCount}">
               <li class="page-item">
                 <a
-                    th:href="@{/stores/{store}/{page}(store=${store}, page=${numberOfPages + pagin - 7})}"
-                    th:text="${numberOfPages + pagin - 7}"
+                    th:href="@{/stores/{store}/{page}(store=${store}, page=${pageCount + pagen - 7})}"
+                    th:text="${pageCount + pagen - 7}"
                     class="page-link"
                 >Pagination</a
                 >
               </li>
             </div>
-            <div th:if="${page - pagin + 7 == numberOfPages}">
+            <div th:if="${page - pagen + 7 == pageCount}">
               <li class="page-item disabled">
                 <a
-                    th:href="@{/stores/{store}/{page}(store=${store}, page=${numberOfPages + pagin - 7})}"
-                    th:text="${numberOfPages + pagin - 7}"
+                    th:href="@{/stores/{store}/{page}(store=${store}, page=${pageCount + pagen - 7})}"
+                    th:text="${pageCount + pagen - 7}"
                     class="page-link"
                 >Pagination</a
                 >
               </li>
             </div>
           </div>
-          <div th:if="${page == numberOfPages}">
+          <div th:if="${page == pageCount}">
             <li class="page-item disabled">
               <a class="page-link" th:href="@{/stores/{store}/{page}(store=${store}, page=${page + 1})}">Next</a>
             </li>
           </div>
-          <div th:if="${page != numberOfPages}">
+          <div th:if="${page != pageCount}">
             <li class="page-item">
               <a class="page-link" th:href="@{/stores/{store}/{page}(store=${store}, page=${page + 1})}">Next</a>
             </li>

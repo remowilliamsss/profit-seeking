@@ -1,13 +1,11 @@
 package ru.egorov.ProfitSeeking.dto;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 
 @Getter
-@Setter
-public class FoundProduct {
+public class FoundProductDto {
     private String name;
     private String sku;
     private String image;
@@ -16,5 +14,14 @@ public class FoundProduct {
     private String color;
     private String country;
     private String gender;
-    private List<ProductDifferences> differences;
+    private List<Difference> differences;
+
+    @Getter
+    public static class Difference {
+        private String storeType;
+        private Double price;
+        private String priceCurrency;
+        private String size;
+        private String url;
+    }
 }
