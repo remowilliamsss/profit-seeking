@@ -91,10 +91,10 @@
       <img th:src="@{{logo}(logo=${logo})}" height="150" alt="store image" />
     </div>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5 my-0">
-      <div th:each="item : ${products}">
+      <div th:each="item : ${items}">
         <div class="col">
           <div class="card">
-            <a th:href="@{/products/{sku}(sku=${item.getSku()})}">
+            <a th:href="@{/items/{sku}(sku=${item.getSku()})}">
               <img
                   th:src="${item.getImage()}"
                   class="card-img-top"
@@ -103,7 +103,7 @@
             </a>
             <div class="card-body">
               <a
-                  th:href="@{/products/{sku}(sku=${item.getSku()})}"
+                  th:href="@{/items/{sku}(sku=${item.getSku()})}"
                   class="link"
               >
                 <h5 th:text="${item.getName()}" class="card-title">
@@ -111,14 +111,17 @@
                 </h5>
               </a>
               <hr>
-                <p class="line" th:text="${item.getPrice() + '&nbsp' + item.getPriceCurrency()}">Price</p>
+              <div th:each="offer : ${item.offers}">
+                <h6 class="line card-title" th:text="${offer.storeName}">Store name</h6>
+                <p class="line" th:text="${offer.price + '&nbsp' + offer.priceCurrency}">Price</p>
                 <a
-                    th:href="${item.getUrl()}"
-                    th:text="Buy"
-                    target="_blank"
-                    class="line btn btn-secondary btn-sm right"
+                        th:href="${offer.url}"
+                        th:text="Buy"
+                        target="_blank"
+                        class="line btn btn-secondary btn-sm right"
                 >Buy</a
                 >
+              </div>
             </div>
           </div>
         </div>

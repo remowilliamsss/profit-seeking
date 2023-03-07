@@ -110,7 +110,7 @@
       <div th:each="item : ${results}">
         <div class="col">
           <div class="card">
-            <a th:href="@{/products/{sku}(sku=${item.sku})}">
+            <a th:href="@{/items/{sku}(sku=${item.sku})}">
               <img
                       th:src="${item.image}"
                       class="card-img-top"
@@ -119,7 +119,7 @@
             </a>
             <div class="card-body">
               <a
-                      th:href="@{/products/{sku}(sku=${item.sku})}"
+                      th:href="@{/items/{sku}(sku=${item.sku})}"
                       class="link"
               >
                 <h5 th:text="${item.name}" class="card-title">
@@ -127,11 +127,11 @@
                 </h5>
               </a>
               <hr>
-              <div th:each="difference : ${item.differences}">
-                <h6 class="line card-title" th:text="${difference.storeType}">Store name</h6>
-                <p class="line" th:text="${difference.price + '&nbsp' + difference.priceCurrency}">Price</p>
+              <div th:each="offer : ${item.offers}">
+                <h6 class="line card-title" th:text="${offer.storeName}">Store name</h6>
+                <p class="line" th:text="${offer.price + '&nbsp' + offer.priceCurrency}">Price</p>
                 <a
-                        th:href="${difference.url}"
+                        th:href="${offer.url}"
                         th:text="Buy"
                         target="_blank"
                         class="line btn btn-secondary btn-sm right"
