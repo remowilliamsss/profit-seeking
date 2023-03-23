@@ -1,4 +1,4 @@
-package ru.egorov.ProfitSeeking;
+package ru.egorov.profitseeking;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

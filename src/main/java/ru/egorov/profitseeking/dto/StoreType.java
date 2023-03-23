@@ -1,4 +1,4 @@
-package ru.egorov.ProfitSeeking.model;
+package ru.egorov.profitseeking.dto;
 
 import lombok.Getter;
 

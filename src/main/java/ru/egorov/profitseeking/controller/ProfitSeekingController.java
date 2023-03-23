@@ -1,23 +1,20 @@
-package ru.egorov.ProfitSeeking.controller;
+package ru.egorov.profitseeking.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.egorov.ProfitSeeking.model.Item;
-import ru.egorov.ProfitSeeking.model.StoreType;
-import ru.egorov.ProfitSeeking.service.ItemService;
+import ru.egorov.profitseeking.client.SearchServiceClient;
+import ru.egorov.profitseeking.dto.ItemResponse;
+import ru.egorov.profitseeking.dto.StoreType;
 
 import java.util.List;
 
 @Controller
 @RequestMapping()
 @RequiredArgsConstructor
-public class ItemController {
-    private final ItemService itemService;
+public class ProfitSeekingController {
+    private final SearchServiceClient searchServiceClient;
 
     @GetMapping("/")
     public String index() {
@@ -36,23 +33,21 @@ public class ItemController {
 
     @GetMapping("/search/{query}/{page}")
     public String search(@PathVariable("query") String query, @PathVariable("page") Integer page, Model model) {
-        Pageable pageable = PageRequest.of(page - 1, 30);
-
         model.addAttribute("page", page);
         model.addAttribute("query", query);
         model.addAttribute("pagination", List.of(1, 2, 3, 4, 5, 6, 7));
 
-        Page<Item> productPage = itemService.findAllByName(query, pageable);
+        ItemResponse response = searchServiceClient.search(query, page - 1, 30);
 
-        model.addAttribute("results", productPage.getContent());
-        model.addAttribute("pageCount", productPage.getTotalPages());
+        model.addAttribute("results", response.getItemDtos());
+        model.addAttribute("pageCount", response.getPageCount());
 
         return "search";
     }
 
     @GetMapping("/items/{sku}")
     public String show(@PathVariable("sku") String sku, Model model) {
-        model.addAttribute("item", itemService.findBySku(sku));
+        model.addAttribute("item", searchServiceClient.show(sku));
 
         return "item";
     }
@@ -65,17 +60,15 @@ public class ItemController {
     @GetMapping("stores/{store}/{page}")
     public String storePage(@PathVariable("store") StoreType store, @PathVariable("page") Integer page,
                             Model model) {
-        Pageable pageable = PageRequest.of(page - 1, 30);
-
         model.addAttribute("store", store);
         model.addAttribute("logo", "/store_logo/" + store + ".png");
         model.addAttribute("page", page);
         model.addAttribute("pagination", List.of(1, 2, 3, 4, 5, 6, 7));
 
-        var productPage = itemService.findAllByStore(store, pageable);
+        ItemResponse response = searchServiceClient.storePage(store, page - 1, 30);
 
-        model.addAttribute("items", productPage.getContent());
-        model.addAttribute("pageCount", productPage.getTotalPages());
+        model.addAttribute("items", response.getItemDtos());
+        model.addAttribute("pageCount", response.getPageCount());
 
         return "store";
     }

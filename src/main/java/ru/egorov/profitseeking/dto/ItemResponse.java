@@ -1,4 +1,4 @@
-package ru.egorov.ProfitSeeking.dto;
+package ru.egorov.profitseeking.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,13 +10,13 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class ProductResponse {
+public class ItemResponse {
 
-    private List<ProductDto> products;
+    private List<ItemDto> itemDtos;
 
     private int pageCount;
 
     {
-        products = Collections.emptyList();
+        itemDtos = Collections.emptyList();
     }
 }
