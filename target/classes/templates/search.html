@@ -44,105 +44,232 @@
       .card:hover {
         background-color: rgba(100, 100, 100, 0.1);
       }
+      .page-link {
+        color: dimgray;
+      }
+      .page-link:hover {
+        color: rgba(50, 50, 50);
+      }
     </style>
   </head>
   <body>
-  <nav class="navbar navbar-expand-lg bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand p-0" href="/">
-        <img th:src="@{/profit-seeking-logo.png}" alt="logo" width="45" />
-      </a>
-      <button
-              class="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/search">Search</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Stores
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/stores/Sneakerhead">Sneakerhead</a></li>
-              <li><a class="dropdown-item" href="/stores/Footbox">Footbox</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-  <div class="container">
-    <div class="st-nm-img">
-      <img th:src="@{/profit-seeking.png}" alt="site name image" />
-    </div>
-    <form
-      th:method="POST"
-      th:action="@{/search}"
-      class="d-flex"
-      role="search"
-    >
-      <input
-        name="query"
-        class="form-control me-2"
-        type="search"
-        placeholder="Search"
-        aria-label="Search"
-      />
-      <button class="btn btn-outline-secondary" type="submit">Search</button>
-    </form>
-    <div
-            th:if="${results}"
-            class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5 my-0"
-    >
-      <div th:if="${results.isEmpty()}">
-        <h5>Nothing found</h5>
-      </div>
-      <div th:each="item : ${results}">
-        <div class="col">
-          <div class="card">
-            <a th:href="@{/products/{sku}(sku=${item.getSku()})}">
-              <img
-                      th:src="${item.image}"
-                      class="card-img-top"
-                      alt="Item image"
-              />
-            </a>
-            <div class="card-body">
-              <a
-                      th:href="@{/products/{sku}(sku=${item.getSku()})}"
-                      class="link"
-              >
-                <h5 th:text="${item.name}" class="card-title">
-                  Item name
-                </h5>
+    <nav class="navbar navbar-expand-lg bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand p-0" href="/">
+          <img th:src="@{/profit-seeking-logo.png}" alt="logo" width="45" />
+        </a>
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/search">Search</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Stores
               </a>
-              <hr>
-              <div th:each="difference : ${item.getDifferences()}">
-                <h6 class="line card-title" th:text="${difference.storeName}">Store name</h6>
-                <p class="line" th:text="${difference.price + '&nbsp' + difference.priceCurrency}">Price</p>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/stores/sneakerhead">Sneakerhead</a></li>
+                <li><a class="dropdown-item" href="/stores/footbox">Footbox</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="st-nm-img">
+        <img th:src="@{/profit-seeking.png}" alt="site name image" />
+      </div>
+      <form
+        th:method="POST"
+        th:action="@{/search}"
+        class="d-flex"
+        role="search"
+      >
+        <input
+          name="query"
+          class="form-control me-2"
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+        />
+        <button class="btn btn-outline-secondary" type="submit">Search</button>
+      </form>
+      <div
+              th:if="${results}"
+              class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5 my-0"
+      >
+        <div th:if="${results.isEmpty()}">
+          <h5>Нигего не найдено</h5>
+        </div>
+        <div th:each="item : ${results}">
+          <div class="col">
+            <div class="card">
+              <a th:href="@{/items/{sku}(sku=${item.sku})}">
+                <img
+                        th:src="${item.image}"
+                        class="card-img-top"
+                        alt="Item image"
+                />
+              </a>
+              <div class="card-body">
                 <a
-                        th:href="${difference.url}"
-                        th:text="Buy"
-                        target="_blank"
-                        class="line btn btn-secondary btn-sm right"
-                >Buy</a
+                        th:href="@{/items/{sku}(sku=${item.sku})}"
+                        class="link"
                 >
+                  <h5 th:text="${item.name}" class="card-title">
+                    Item name
+                  </h5>
+                </a>
+                <hr>
+                <div th:each="offer : ${item.offers}">
+                  <h6 class="line card-title" th:text="${offer.storeName}">Store name</h6>
+                  <p class="line" th:text="${offer.price + '&nbsp' + offer.priceCurrency}">Price</p>
+                  <a
+                          th:href="${offer.url}"
+                          th:text="Buy"
+                          target="_blank"
+                          class="line btn btn-secondary btn-sm right"
+                  >Buy</a
+                  >
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <nav aria-label="Page navigation">
+        <div th:if="${results != null}">
+          <div th:if="${page <= 3 || pageCount <= 7}">
+            <ul class="pagination justify-content-end my-5">
+              <div th:if="${page == 1}">
+                <li class="page-item disabled">
+                  <a class="page-link" th:href="@{/search/{query}/{page}(query=${query}, page=${page - 1})}">Previous</a>
+                </li>
+              </div>
+              <div th:if="${page != 1}">
+                <li class="page-item">
+                  <a class="page-link" th:href="@{/search/{query}/{page}(query=${query}, page=${page - 1})}">Previous</a>
+                </li>
+              </div>
+              <div th:each="pagen : ${pagination}">
+                <div th:if="${page != pagen && pagen <= pageCount}">
+                  <li class="page-item">
+                    <a
+                            th:href="@{/search/{query}/{page}(query=${query}, page=${pagen})}"
+                            th:text="${pagen}"
+                            class="page-link"
+                    >Pagination</a
+                    >
+                  </li>
+                </div>
+                <div th:if="${page == pagen || pagen > pageCount}">
+                  <li class="page-item disabled">
+                    <a
+                            th:href="@{/search/{query}/{page}(query=${query}, page=${pagen})}"
+                            th:text="${pagen}"
+                            class="page-link"
+                    >Pagination</a
+                    >
+                  </li>
+                </div>
+              </div>
+              <div th:if="${page < pageCount}">
+                <li class="page-item">
+                  <a class="page-link" th:href="@{/search/{query}/{page}(query=${query}, page=${page + 1})}">Next</a>
+                </li>
+              </div>
+              <div th:if="${page >= pageCount}">
+                <li class="page-item disabled">
+                  <a class="page-link" th:href="@{/search/{query}/{page}(query=${query}, page=${page + 1})}">Next</a>
+                </li>
+              </div>
+            </ul>
+          </div>
+          <div th:if="${(page > 3) && (page < pageCount - 2) && pageCount > 7}">
+            <ul class="pagination justify-content-end my-5">
+              <li class="page-item">
+                <a class="page-link" th:href="@{/search/{query}/{page}(query=${query}, page=${page - 1})}">Previous</a>
+              </li>
+              <div th:each="pagen : ${pagination}">
+                <div th:if="${pagen != 4}">
+                  <li class="page-item">
+                    <a
+                            th:href="@{/search/{query}/{page}(query=${query}, page=${pagen + page - 4})}"
+                            th:text="${pagen + page - 4}"
+                            class="page-link"
+                    >Pagination</a
+                    >
+                  </li>
+                </div>
+                <div th:if="${pagen == 4 || pagen + page - 4 > pageCount}">
+                  <li class="page-item disabled">
+                    <a
+                            th:href="@{/search/{query}/{page}(query=${query}, page=${pagen + page - 4})}"
+                            th:text="${pagen + page - 4}"
+                            class="page-link"
+                    >Pagination</a
+                    >
+                  </li>
+                </div>
+              </div>
+              <li class="page-item">
+                <a class="page-link" th:href="@{/search/{query}/{page}(query=${query}, page=${page + 1})}">Next</a>
+              </li>
+            </ul>
+          </div>
+          <div th:if="${page >= (pageCount - 2) && pageCount > 7}">
+            <ul class="pagination justify-content-end my-5">
+              <li class="page-item">
+                <a class="page-link" th:href="@{/search/{query}/{page}(query=${query}, page=${page - 1})}">Previous</a>
+              </li>
+              <div th:each="pagen : ${pagination}">
+                <div th:if="${page - pagen + 7 != pageCount}">
+                  <li class="page-item">
+                    <a
+                            th:href="@{/search/{query}/{page}(query=${query}, page=${pageCount + pagen - 7})}"
+                            th:text="${pageCount + pagen - 7}"
+                            class="page-link"
+                    >Pagination</a
+                    >
+                  </li>
+                </div>
+                <div th:if="${page - pagen + 7 == pageCount}">
+                  <li class="page-item disabled">
+                    <a
+                            th:href="@{/search/{query}/{page}(query=${query}, page=${pageCount + pagen - 7})}"
+                            th:text="${pageCount + pagen - 7}"
+                            class="page-link"
+                    >Pagination</a
+                    >
+                  </li>
+                </div>
+              </div>
+              <div th:if="${page == pageCount}">
+                <li class="page-item disabled">
+                  <a class="page-link" th:href="@{/search/{query}/{page}(query=${query}, page=${page + 1})}">Next</a>
+                </li>
+              </div>
+              <div th:if="${page != pageCount}">
+                <li class="page-item">
+                  <a class="page-link" th:href="@{/search/{query}/{page}(query=${query}, page=${page + 1})}">Next</a>
+                </li>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </nav>
     </div>
-  </div>
   </body>
 </html>

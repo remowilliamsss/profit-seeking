@@ -2,13 +2,10 @@ package ru.egorov.profitseeking.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
-import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Setter
 public class ItemDto {
 
     @NotEmpty
@@ -34,8 +31,4 @@ public class ItemDto {
     private String coloring;
 
     private List<OfferDto> offers;
-
-    {
-        offers = new ArrayList<>();
-    }
 }
