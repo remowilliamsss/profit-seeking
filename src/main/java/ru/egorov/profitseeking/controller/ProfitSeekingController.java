@@ -1,11 +1,14 @@
 package ru.egorov.profitseeking.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.egorov.profitseeking.client.SearchServiceClient;
-import ru.egorov.profitseeking.dto.ItemResponse;
+import ru.egorov.profitseeking.dto.ItemDto;
 import ru.egorov.profitseeking.dto.StoreType;
 
 import java.util.List;
@@ -22,26 +25,20 @@ public class ProfitSeekingController {
     }
 
     @GetMapping("/search")
-    public String search() {
-        return "search";
-    }
+    public String search(@RequestParam(value = "q", required = false) String query, Model model,
+                         @PageableDefault(size = 30) Pageable pageable) {
+        if (query == null) {
+            return "search";
+        }
 
-    @PostMapping("/search")
-    public String search(@RequestParam("query") String query) {
-        return "redirect:search/" + query + "/1";
-    }
-
-    @GetMapping("/search/{query}/{page}")
-    public String search(@PathVariable("query") String query, @PathVariable("page") Integer page, Model model) {
-        model.addAttribute("page", page);
         model.addAttribute("query", query);
-        model.addAttribute("pagination", List.of(1, 2, 3, 4, 5, 6, 7));
+        model.addAttribute("page", pageable.getPageNumber());
+        model.addAttribute("pagination", List.of(0, 1, 2, 3, 4, 5, 6));
 
-        ItemResponse response = searchServiceClient.search(query, page - 1, 30);
+        Page<ItemDto> page = searchServiceClient.search(query, pageable);
 
-        model.addAttribute("results", response.getItemDtos());
-        model.addAttribute("pageCount", response.getPageCount());
-
+        model.addAttribute("results", page.getContent());
+        model.addAttribute("pageCount", page.getTotalPages());
         return "search";
     }
 
@@ -53,22 +50,17 @@ public class ProfitSeekingController {
     }
 
     @GetMapping("stores/{store}")
-    public String storePage (@PathVariable("store") StoreType store) {
-        return "redirect:" + store + "/1";
-    }
-
-    @GetMapping("stores/{store}/{page}")
-    public String storePage(@PathVariable("store") StoreType store, @PathVariable("page") Integer page,
-                            Model model) {
+    public String storePage(@PathVariable("store") StoreType store, Model model,
+                            @PageableDefault(size = 30) Pageable pageable) {
         model.addAttribute("store", store);
+        model.addAttribute("page", pageable.getPageNumber());
         model.addAttribute("logo", "/store_logo/" + store + ".png");
-        model.addAttribute("page", page);
-        model.addAttribute("pagination", List.of(1, 2, 3, 4, 5, 6, 7));
+        model.addAttribute("pagination", List.of(0, 1, 2, 3, 4, 5, 6));
 
-        ItemResponse response = searchServiceClient.storePage(store, page - 1, 30);
+        Page<ItemDto> page = searchServiceClient.storePage(store, pageable);
 
-        model.addAttribute("items", response.getItemDtos());
-        model.addAttribute("pageCount", response.getPageCount());
+        model.addAttribute("items", page.getContent());
+        model.addAttribute("pageCount", page.getTotalPages());
 
         return "store";
     }
