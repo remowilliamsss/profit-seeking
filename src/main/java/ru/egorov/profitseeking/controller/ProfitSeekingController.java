@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.egorov.profitseeking.client.SearchServiceClient;
 import ru.egorov.profitseeking.dto.ItemDto;
 import ru.egorov.profitseeking.dto.StoreType;
-
-import java.util.List;
+import ru.egorov.profitseeking.paging.Paged;
+import ru.egorov.profitseeking.paging.Paging;
 
 @Controller
 @RequestMapping()
@@ -31,14 +31,12 @@ public class ProfitSeekingController {
             return "search";
         }
 
-        model.addAttribute("query", query);
-        model.addAttribute("page", pageable.getPageNumber());
-        model.addAttribute("pagination", List.of(0, 1, 2, 3, 4, 5, 6));
-
         Page<ItemDto> page = searchServiceClient.search(query, pageable);
+        Paging paging = Paging.of(page.getTotalPages(), pageable.getPageNumber(), pageable.getPageSize());
 
-        model.addAttribute("results", page.getContent());
-        model.addAttribute("pageCount", page.getTotalPages());
+        model.addAttribute("items", new Paged<>(page, paging));
+        model.addAttribute("query", query);
+
         return "search";
     }
 
@@ -52,15 +50,13 @@ public class ProfitSeekingController {
     @GetMapping("stores/{store}")
     public String storePage(@PathVariable("store") StoreType store, Model model,
                             @PageableDefault(size = 30) Pageable pageable) {
-        model.addAttribute("store", store);
-        model.addAttribute("page", pageable.getPageNumber());
-        model.addAttribute("logo", "/store_logo/" + store + ".png");
-        model.addAttribute("pagination", List.of(0, 1, 2, 3, 4, 5, 6));
 
         Page<ItemDto> page = searchServiceClient.storePage(store, pageable);
+        Paging paging = Paging.of(page.getTotalPages(), pageable.getPageNumber(), pageable.getPageSize());
 
-        model.addAttribute("items", page.getContent());
-        model.addAttribute("pageCount", page.getTotalPages());
+        model.addAttribute("items", new Paged<>(page, paging));
+        model.addAttribute("store", store);
+        model.addAttribute("logo", "/store_logo/" + store + ".png");
 
         return "store";
     }
