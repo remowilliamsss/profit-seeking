@@ -44,105 +44,135 @@
       .card:hover {
         background-color: rgba(100, 100, 100, 0.1);
       }
+      .page-link {
+        color: dimgray;
+      }
+      .page-link:hover {
+        color: rgba(50, 50, 50);
+      }
+
     </style>
   </head>
   <body>
-  <nav class="navbar navbar-expand-lg bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand p-0" href="/">
-        <img th:src="@{/profit-seeking-logo.png}" alt="logo" width="45" />
-      </a>
-      <button
-              class="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/search">Search</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Stores
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/stores/sneakerhead">Sneakerhead</a></li>
-              <li><a class="dropdown-item" href="/stores/footbox">Footbox</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-  <div class="container">
-    <div class="st-nm-img">
-      <img th:src="@{/profit-seeking.png}" alt="site name image" />
-    </div>
-    <form
-      th:method="POST"
-      th:action="@{/search}"
-      class="d-flex"
-      role="search"
-    >
-      <input
-        name="query"
-        class="form-control me-2"
-        type="search"
-        placeholder="Search"
-        aria-label="Search"
-      />
-      <button class="btn btn-outline-secondary" type="submit">Search</button>
-    </form>
-    <div
-            th:if="${results}"
-            class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5 my-0"
-    >
-      <div th:if="${results.isEmpty()}">
-        <h5>Nothing found</h5>
-      </div>
-      <div th:each="item : ${results}">
-        <div class="col">
-          <div class="card">
-            <a th:href="@{/products/{sku}(sku=${item.sku})}">
-              <img
-                      th:src="${item.image}"
-                      class="card-img-top"
-                      alt="Item image"
-              />
-            </a>
-            <div class="card-body">
-              <a
-                      th:href="@{/products/{sku}(sku=${item.sku})}"
-                      class="link"
-              >
-                <h5 th:text="${item.name}" class="card-title">
-                  Item name
-                </h5>
+    <nav class="navbar navbar-expand-lg bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand p-0" href="/">
+          <img th:src="@{/profit-seeking-logo.png}" alt="logo" width="45" />
+        </a>
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/search">search</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                stores
               </a>
-              <hr>
-              <div th:each="difference : ${item.differences}">
-                <h6 class="line card-title" th:text="${difference.storeType}">Store name</h6>
-                <p class="line" th:text="${difference.price + '&nbsp' + difference.priceCurrency}">Price</p>
-                <a
-                        th:href="${difference.url}"
-                        th:text="Buy"
-                        target="_blank"
-                        class="line btn btn-secondary btn-sm right"
-                >Buy</a
-                >
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/stores/sneakerhead">sneakerhead</a></li>
+                <li><a class="dropdown-item" href="/stores/footbox">footbox</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="st-nm-img">
+        <img th:src="@{/profit-seeking.png}" alt="site name image" />
+      </div>
+      <form
+        th:method="GET"
+        th:action="@{/search}"
+        class="d-flex"
+        role="search"
+      >
+        <input
+          name="q"
+          class="form-control me-2"
+          type="search"
+          placeholder="search"
+          aria-label="search"
+        />
+        <button class="btn btn-outline-secondary" type="submit">search</button>
+      </form>
+      <div
+              th:if="${items}"
+      >
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5 my-0"
+        >
+          <div th:if="${items.page.content.isEmpty()}">
+            <h5>Нигего не найдено</h5>
+          </div>
+          <div th:each="item : ${items.page.getContent()}">
+            <div class="col">
+              <div class="card">
+                <a th:href="@{/items/{sku}(sku=${item.getSku()})}">
+                  <img
+                          th:src="${item.getImage()}"
+                          class="card-img-top"
+                          alt="Item image"
+                  />
+                </a>
+                <div class="card-body">
+                  <a
+                          th:href="@{/items/{sku}(sku=${item.getSku()})}"
+                          class="link"
+                  >
+                    <h5 th:text="${item.getName()}" class="card-title">
+                      Item name
+                    </h5>
+                  </a>
+                  <hr>
+                  <div th:each="offer : ${item.getOffers()}">
+                    <h6 class="line card-title" th:text="${offer.getStoreName()}">store name</h6>
+                    <p class="line" th:text="${offer.getPrice() + '&nbsp' + offer.getPriceCurrency()}">Price</p>
+                    <a
+                            th:href="${offer.getUrl()}"
+                            th:text="Buy"
+                            target="_blank"
+                            class="line btn btn-secondary btn-sm right"
+                    >Buy</a
+                    >
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <nav aria-label="Page navigation" class="paging right my-5">
+          <ul class="pagination" th:if="${items.page.getTotalPages() > 1}">
+            <li class="page-item" th:classappend="${!items.paging.isPrevEnabled() ? 'disabled' : ''}">
+              <a class="page-link" th:href="@{'?q=' + ${query} + '&page=' + ${items.paging.getPageNumber() - 1}}"
+                 tabindex="-1">Previous</a>
+            </li>
+            <th:block th:each="item : ${items.paging.getItems()}">
+              <li class="page-item" th:classappend="${item.getIndex() == items.paging.getPageNumber() + 1 ? 'disabled' : ''}"
+                  th:if="${item.pageItemType.name() == 'PAGE'}">
+                <a class="page-link" th:href="@{'?q=' + ${query} + '&page=' + ${item.getIndex() - 1}}"
+                   th:text="${item.getIndex()}"></a>
+              </li>
+              <li class="page-item disabled" th:if="${item.pageItemType.name() == 'DOTS'}">
+                <a class="page-link" href="#">...</a>
+              </li>
+            </th:block>
+            <li class="page-item" th:classappend="${!items.paging.isNextEnabled() ? 'disabled' : ''}">
+              <a class="page-link" th:href="@{'?q=' + ${query} + '&page=' + ${items.paging.getPageNumber() + 1}}">Next</a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
-  </div>
   </body>
 </html>

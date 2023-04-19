@@ -1,0 +1,5 @@
+server.port=
+spring.application.name=
+eureka.client.service-url.default-zone=
+search-service.username=
+search-service.password=

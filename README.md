@@ -1,16 +1,11 @@
-# ProfitSeeking
+# profit-seeking
 
 Веб-приложение для сравнения цен на товары на разных площадках.
 
-Подключено к моему REST-сервису (https://github.com/remowilliamsss/StoreCrawler).
-
-Видео с работой приложения:
-
+Видео с демонстрацией сайта:
 https://disk.yandex.ru/i/bbmtSsKvLTuPhw
 
 В проекте использовались:
 1. Spring Boot
-2. Spring REST
+2. Spring Cloud
 3. Thymeleaf
-
- 
